@@ -241,7 +241,7 @@ class HybridEncryptionGUI:
             row.pack(fill="x", padx=6, pady=1)
             tk.Label(row, text=label + ":", font=("Segoe UI", 8),
                      bg=c["panel"], fg=c["subtext"], width=20, anchor="w").pack(side="left")
-            lbl = tk.Label(row, text="✗ Belum load",
+            lbl = tk.Label(row, text="[NOT LOADED]",
                            font=("Segoe UI", 8, "bold"),
                            bg=c["panel"], fg=c["danger"])
             lbl.pack(side="left")
@@ -353,9 +353,9 @@ class HybridEncryptionGUI:
     def _set_key_status(self, key, loaded=True):
         c = self.colors
         if loaded:
-            self.key_labels[key].config(text="✓ Loaded", fg=c["success"])
+            self.key_labels[key].config(text="[LOADED]", fg=c["success"])
         else:
-            self.key_labels[key].config(text="✗ Belum load", fg=c["danger"])
+            self.key_labels[key].config(text="[NOT LOADED]", fg=c["danger"])
 
     def _set_final(self, text, ok=True):
         c = self.colors
@@ -391,14 +391,14 @@ class HybridEncryptionGUI:
                 self._set_key_status("pub_dosen",  True)
                 self._set_key_status("priv_dosen", True)
 
-                self._log(f"✓ Public Key  : {folder}/dosen_public.json",  "success")
-                self._log(f"✓ Private Key : {folder}/dosen_private.json", "success")
-                self._log(f"✓ Waktu       : {elapsed:.3f} detik",         "success")
+                self._log(f"[OK] Public Key  : {folder}/dosen_public.json",  "success")
+                self._log(f"[OK] Private Key : {folder}/dosen_private.json", "success")
+                self._log(f"[OK] Waktu       : {elapsed:.3f} detik",         "success")
                 self.status_var.set(f"Kunci dosen berhasil dibuat ({elapsed:.3f}s)")
-                self._set_final("✓ Kunci dosen berhasil dibuat", True)
+                self._set_final("[OK] Kunci dosen berhasil dibuat", True)
 
             except Exception as e:
-                self._log(f"✗ Error: {e}", "danger")
+                self._log(f"[ERROR] Error: {e}", "danger")
                 messagebox.showerror("Error", str(e))
 
         threading.Thread(target=task, daemon=True).start()
@@ -431,14 +431,14 @@ class HybridEncryptionGUI:
                 self._set_key_status("pub_mhs",  True)
                 self._set_key_status("priv_mhs", True)
 
-                self._log(f"✓ Public Key  : {folder}/{prefix}_public.json",  "success")
-                self._log(f"✓ Private Key : {folder}/{prefix}_private.json", "success")
-                self._log(f"✓ Waktu       : {elapsed:.3f} detik",            "success")
-                self.status_var.set("Kunci mahasiswa berhasil dibuat")
-                self._set_final("✓ Kunci mahasiswa berhasil dibuat", True)
+                self._log(f"[OK] Public Key  : {folder}/{prefix}_public.json",  "success")
+                self._log(f"[OK] Private Key : {folder}/{prefix}_private.json", "success")
+                self._log(f"[OK] Waktu       : {elapsed:.3f} detik",            "success")
+                self.status_var.set(f"Kunci mahasiswa berhasil dibuat ({elapsed:.3f}s)")
+                self._set_final("[OK] Kunci mahasiswa berhasil dibuat", True)
 
             except Exception as e:
-                self._log(f"✗ Error: {e}", "danger")
+                self._log(f"[ERROR] Error: {e}", "danger")
                 messagebox.showerror("Error", str(e))
 
         threading.Thread(target=task, daemon=True).start()
@@ -455,7 +455,7 @@ class HybridEncryptionGUI:
         if path:
             self.dosen_pub_key.set(path)
             self._set_key_status("pub_dosen", True)
-            self._log(f"✓ Public Key Dosen dimuat: {path}", "success")
+            self._log(f"[OK] Public Key Dosen dimuat: {path}", "success")
 
     def _load_dosen_priv(self):
         path = filedialog.askopenfilename(
@@ -465,7 +465,7 @@ class HybridEncryptionGUI:
         if path:
             self.dosen_priv_key.set(path)
             self._set_key_status("priv_dosen", True)
-            self._log(f"✓ Private Key Dosen dimuat: {path}", "success")
+            self._log(f"[OK] Private Key Dosen dimuat: {path}", "success")
 
     def _load_student_pub(self):
         path = filedialog.askopenfilename(
@@ -475,7 +475,7 @@ class HybridEncryptionGUI:
         if path:
             self.student_pub_key.set(path)
             self._set_key_status("pub_mhs", True)
-            self._log(f"✓ Public Key Mahasiswa dimuat: {path}", "success")
+            self._log(f"[OK] Public Key Mahasiswa dimuat: {path}", "success")
 
     def _load_student_priv(self):
         path = filedialog.askopenfilename(
@@ -485,7 +485,7 @@ class HybridEncryptionGUI:
         if path:
             self.student_priv_key.set(path)
             self._set_key_status("priv_mhs", True)
-            self._log(f"✓ Private Key Mahasiswa dimuat: {path}", "success")
+            self._log(f"[OK] Private Key Mahasiswa dimuat: {path}", "success")
 
     # ─────────────────────────────────────────────
     # Callback: Pilih File

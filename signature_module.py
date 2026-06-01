@@ -226,11 +226,11 @@ def verify_signature(filepath, signature_bytes, public_key):
     print(f"[SIG] Hash dari signature: {hash_asli_bytes.hex()[:20]}...")
 
     if current_hash == hash_asli_bytes:
-        pesan = "✓ SIGNATURE VALID - File asli dari pengirim"
+        pesan = "[OK] SIGNATURE VALID - File asli dari pengirim"
         print(f"[SIG] {pesan}")
         return True, pesan
     else:
-        pesan = "✗ SIGNATURE TIDAK VALID - File telah dimodifikasi atau pengirim palsu!"
+        pesan = "[FAIL] SIGNATURE TIDAK VALID - File telah dimodifikasi atau pengirim palsu!"
         print(f"[SIG] {pesan}")
         return False, pesan
 
@@ -253,9 +253,9 @@ def verify_signature_bytes(data_bytes, signature_bytes, public_key):
         hash_asli_bytes = hash_asli_bytes.rjust(32, b'\x00')
 
     if current_hash == hash_asli_bytes:
-        return True, "✓ SIGNATURE VALID"
+        return True, "[OK] SIGNATURE VALID"
     else:
-        return False, "✗ SIGNATURE TIDAK VALID"
+        return False, "[FAIL] SIGNATURE TIDAK VALID"
 
 
 # ─────────────────────────────────────────────

@@ -152,11 +152,11 @@ def verify_integrity(filepath, expected_hash):
     print(f"[VERIFY] Hash saat ini  : {current_hash[:30]}...")
 
     if current_hash == expected_hash:
-        pesan = "✓ INTEGRITAS TERJAGA - File tidak dimodifikasi"
+        pesan = "[OK] INTEGRITAS TERJAGA - File tidak dimodifikasi"
         print(f"[VERIFY] {pesan}")
         return True, pesan
     else:
-        pesan = "✗ INTEGRITAS GAGAL - File telah dimodifikasi!"
+        pesan = "[FAIL] INTEGRITAS GAGAL - File telah dimodifikasi!"
         print(f"[VERIFY] {pesan}")
         return False, pesan
 
@@ -174,9 +174,9 @@ def verify_integrity_bytes(data_bytes, expected_hash):
     current_hash = hashlib.sha256(data_bytes).hexdigest()
 
     if current_hash == expected_hash:
-        return True, "✓ INTEGRITAS TERJAGA"
+        return True, "[OK] INTEGRITAS TERJAGA"
     else:
-        return False, "✗ INTEGRITAS GAGAL"
+        return False, "[FAIL] INTEGRITAS GAGAL"
 
 
 # ─────────────────────────────────────────────

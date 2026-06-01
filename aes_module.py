@@ -241,8 +241,8 @@ if __name__ == "__main__":
         hasil = f.read()
 
     if hasil == test_content:
-        print("\n✓ Verifikasi: Isi file sama persis!")
+        print("\n[OK] Verifikasi: Isi file sama persis!")
     else:
-        print("\n✗ Verifikasi: Isi file BERBEDA!")
+        print("\n[FAIL] Verifikasi: Isi file BERBEDA!")
 
     print("\n[AES] Test selesai!")

@@ -70,19 +70,19 @@ def encrypt_assignment(
     print("\n[STEP 1] Memuat kunci RSA...")
     dosen_pub_key   = load_public_key(dosen_public_key_path)
     student_priv_key = load_private_key(student_private_key_path)
-    print("         ✓ Public Key dosen dimuat")
-    print("         ✓ Private Key mahasiswa dimuat")
+    print("         [OK] Public Key dosen dimuat")
+    print("         [OK] Private Key mahasiswa dimuat")
 
     # ── LANGKAH 2: Generate AES Key ───────────────────────────
     print("\n[STEP 2] Generate AES-256 key...")
     aes_key = generate_aes_key()
-    print(f"         ✓ AES Key: {aes_key.hex()[:16]}... (32 bytes)")
+    print(f"         [OK] AES Key: {aes_key.hex()[:16]}... (32 bytes)")
 
     # ── LANGKAH 3: AES Encrypt File ───────────────────────────
     print("\n[STEP 3] Enkripsi file menggunakan AES-256...")
     enc_path = os.path.join(output_folder, filename + ".enc")
     enc_info = encrypt_file(input_file, enc_path, aes_key)
-    print(f"         ✓ File terenkripsi: {enc_path}")
+    print(f"         [OK] File terenkripsi: {enc_path}")
 
     # ── LANGKAH 4: RSA Encrypt AES Key ────────────────────────
     print("\n[STEP 4] Enkripsi AES key menggunakan RSA Public Key dosen...")
@@ -93,14 +93,14 @@ def encrypt_assignment(
     key_path = os.path.join(output_folder, filename + ".key")
     with open(key_path, 'wb') as f:
         f.write(encrypted_key)
-    print(f"         ✓ Encrypted AES key disimpan: {key_path}")
-    print(f"         ✓ Waktu RSA enkripsi: {t_rsa_enc:.4f} detik")
+    print(f"         [OK] Encrypted AES key disimpan: {key_path}")
+    print(f"         [OK] Waktu RSA enkripsi: {t_rsa_enc:.4f} detik")
 
     # ── LANGKAH 5: Hash File Asli ──────────────────────────────
     print("\n[STEP 5] Menghitung hash SHA-256 file asli...")
     file_hash  = hash_file(input_file)
     hash_path  = save_hash(input_file, file_hash, output_folder=output_folder)
-    print(f"         ✓ SHA-256: {file_hash[:20]}...")
+    print(f"         [OK] SHA-256: {file_hash[:20]}...")
 
     # ── LANGKAH 6: Digital Signature ──────────────────────────
     print("\n[STEP 6] Membuat digital signature...")
@@ -109,8 +109,8 @@ def encrypt_assignment(
     t_sig       = time.time() - t_sig_start
 
     sig_path = save_signature(signature, input_file, output_folder=output_folder)
-    print(f"         ✓ Signature disimpan: {sig_path}")
-    print(f"         ✓ Waktu signing: {t_sig:.4f} detik")
+    print(f"         [OK] Signature disimpan: {sig_path}")
+    print(f"         [OK] Waktu signing: {t_sig:.4f} detik")
 
     # ── Ringkasan ──────────────────────────────────────────────
     total_time = time.time() - start_total
@@ -189,12 +189,12 @@ def decrypt_assignment(
     }
 
     try:
-        # ── LANGKAH 1: Load kunci ──────────────────────────────
+        # -- LANGKAH 1: Load kunci ---------------------------------
         print("\n[STEP 1] Memuat kunci RSA dosen...")
         dosen_priv_key    = load_private_key(dosen_private_key_path)
         student_pub_key   = load_public_key(student_public_key_path)
-        print("         ✓ Private Key dosen dimuat")
-        print("         ✓ Public Key mahasiswa dimuat")
+        print("         [OK] Private Key dosen dimuat")
+        print("         [OK] Public Key mahasiswa dimuat")
 
         # ── LANGKAH 2: RSA Decrypt AES Key ────────────────────
         print("\n[STEP 2] Mendekripsi AES key menggunakan RSA Private Key dosen...")
@@ -204,8 +204,8 @@ def decrypt_assignment(
 
         aes_key   = decrypt_aes_key(encrypted_key_bytes, dosen_priv_key)
         t_rsa_dec = time.time() - t_rsa_start
-        print(f"         ✓ AES Key berhasil didekripsi: {aes_key.hex()[:16]}...")
-        print(f"         ✓ Waktu RSA dekripsi: {t_rsa_dec:.4f} detik")
+        print(f"         [OK] AES Key berhasil didekripsi: {aes_key.hex()[:16]}...")
+        print(f"         [OK] Waktu RSA dekripsi: {t_rsa_dec:.4f} detik")
 
         # ── LANGKAH 3: AES Decrypt File ───────────────────────
         print("\n[STEP 3] Mendekripsi file menggunakan AES-256...")
@@ -214,15 +214,15 @@ def decrypt_assignment(
 
         if dec_info["status"] == "SUCCESS":
             hasil["decryption_ok"]  = True
-            hasil["decryption_msg"] = "✓ Dekripsi AES berhasil"
+            hasil["decryption_msg"] = "[OK] Dekripsi AES berhasil"
             hasil["output_file"]    = output_file
-            print(f"         ✓ File berhasil didekripsi: {output_file}")
+            print(f"         [OK] File berhasil didekripsi: {output_file}")
         else:
             hasil["decryption_ok"]  = False
-            hasil["decryption_msg"] = "✗ Dekripsi AES GAGAL - File mungkin dimanipulasi"
-            print(f"         ✗ Dekripsi GAGAL!")
+            hasil["decryption_msg"] = "[FAIL] Dekripsi AES GAGAL - File mungkin dimanipulasi"
+            print(f"         [FAIL] Dekripsi GAGAL!")
 
-        # ── LANGKAH 4: Verifikasi Hash ─────────────────────────
+        # -- LANGKAH 4: Verifikasi Hash ----------------------------
         print("\n[STEP 4] Verifikasi integritas hash SHA-256...")
         hash_data      = load_hash(hash_file_path)
         expected_hash  = hash_data["sha256"]
@@ -231,12 +231,12 @@ def decrypt_assignment(
             int_ok, int_msg = verify_integrity(output_file, expected_hash)
         else:
             int_ok  = False
-            int_msg = "✗ INTEGRITAS GAGAL - Dekripsi tidak berhasil"
+            int_msg = "[FAIL] INTEGRITAS GAGAL - Dekripsi tidak berhasil"
 
         hasil["integrity_ok"]  = int_ok
         hasil["integrity_msg"] = int_msg
 
-        # ── LANGKAH 5: Verifikasi Digital Signature ───────────
+        # -- LANGKAH 5: Verifikasi Digital Signature ----------------
         print("\n[STEP 5] Verifikasi digital signature mahasiswa...")
         sig_data = load_signature(sig_file)
         sig_bytes = sig_data["signature_bytes"]
@@ -245,7 +245,7 @@ def decrypt_assignment(
             sig_ok, sig_msg = verify_signature(output_file, sig_bytes, student_pub_key)
         else:
             sig_ok  = False
-            sig_msg = "✗ SIGNATURE TIDAK DAPAT DIVERIFIKASI - Dekripsi gagal"
+            sig_msg = "[FAIL] SIGNATURE TIDAK DAPAT DIVERIFIKASI - Dekripsi gagal"
 
         hasil["signature_ok"]  = sig_ok
         hasil["signature_msg"] = sig_msg
@@ -275,9 +275,9 @@ def decrypt_assignment(
     print("-" * 60)
 
     if hasil["status"] == "AMAN":
-        print("   STATUS AKHIR : ✓ FILE AMAN DAN TERPERCAYA")
+        print("   STATUS AKHIR : [OK] FILE AMAN DAN TERPERCAYA")
     else:
-        print("   STATUS AKHIR : ✗ FILE BERMASALAH - INTEGRITAS/SIGNATURE GAGAL")
+        print("   STATUS AKHIR : [FAIL] FILE BERMASALAH - INTEGRITAS/SIGNATURE GAGAL")
 
     print("=" * 60)
 
